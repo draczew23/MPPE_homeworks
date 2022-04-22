@@ -1,0 +1,3 @@
+- To use the script run_root_in_batch.C you have to run this file with command: 
+root -q -b run_root_in_batch.C in the terminal in jupyet notebook in the browser, not vsc
+- to use different data/files you have to comment/uncomment specific lines in this file
