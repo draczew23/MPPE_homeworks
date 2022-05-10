@@ -548,58 +548,62 @@ void plot_all_histos() {
   Int_t ipad = 0;
 
   //
-  // canv1->Clear();
-  // canv1->Divide(1,1,0.005,0.005);
+  canv1->Clear();
+  canv1->Divide(1,1,0.005,0.005);
 
-  // plot_two_hist(h_gen_eff_the, h_eff_the , canv1, 1, "the eff", "the", "eff", "ylin", 0.0, 0.0);
+  // plot_single_hist(h_the, canv1, 1, "the eff", "the", "eff", "ylin", 0.0, 0.0);
 
-  // canv1->Update();
-  // pdf_name = REVISION+"_p_gen_eff_the_plus_TAG_and_PROBE_eff.pdf";
-  // canv1->Print(pdf_name.c_str());
+  plot_two_hist(h_gen_eff_the, h_eff_the , canv1, 1, "the eff", "the", "eff", "ylin", 0.0, 0.0);
+
+  canv1->Update();
+  pdf_name = REVISION+"_p_gen_eff_the_plus_TAG_and_PROBE_eff.pdf";
+  canv1->Print(pdf_name.c_str());
   
-  //
+  TCanvas *canv2 = new TCanvas("canv2","canv2",10,10,1400,700);
+
+  
   // p: h_gen_eff plus TAG and PROBE effic
   //
   
-  canv1->Clear();
-  canv1->Divide(1,1,0.005,0.005);
+  canv2->Clear();
+  canv2->Divide(1,1,0.005,0.005);
 
-  plot_two_hist(h_gen_eff_p, h_eff_p , canv1, 1, "p eff", "p (GeV)", "eff", "ylin", 0.0, 0.0);
+  plot_two_hist(h_gen_eff_p, h_eff_p , canv2, 1, "theta eff", "theta radians ", "eff", "ylin", 0.0, 0.0);
 
-  canv1->Update();
+  canv2->Update();
   pdf_name = REVISION+"_p_gen_eff_plus_TAG_and_PROBE_eff.pdf";
-  canv1->Print(pdf_name.c_str());
+  canv2->Print(pdf_name.c_str());
   
-  //
-  // p gen and trg
-  //
+  // //
+  // // p gen and trg
+  // //
   
-  canv1->Clear();
-  canv1->Divide(1,1,0.005,0.005);
+  // canv1->Clear();
+  // canv1->Divide(1,1,0.005,0.005);
 
-  plot_two_hist(h_gen_p, h_p, canv1, 1, "p gen and trg", "p (GeV)", "Nevents", "ylin", 0.0, 0.0);
+  // plot_two_hist(h_gen_p, h_p, canv1, 1, "p gen and trg", "p (GeV)", "Nevents", "ylin", 0.0, 0.0);
 
-  canv1->Update();
-  pdf_name = REVISION+"_p_gen_trg_lin.pdf";
-  canv1->Print(pdf_name.c_str());
+  // canv1->Update();
+  // pdf_name = REVISION+"_p_gen_trg_lin.pdf";
+  // canv1->Print(pdf_name.c_str());
 
-  //
-  // p TAG and PROBE
-  //
+  // //
+  // // p TAG and PROBE
+  // //
   
-  canv1->Clear();
-  canv1->Divide(1,1,0.005,0.005);
+  // canv1->Clear();
+  // canv1->Divide(1,1,0.005,0.005);
 
-  plot_two_hist(h_TAG_p, h_PROBE_p, canv1, 1, "p TAG and PROBE", "p (GeV)", "Nevents", "ylin", 0.0, 0.0);
+  // plot_two_hist(h_TAG_p, h_PROBE_p, canv1, 1, "p TAG and PROBE", "p (GeV)", "Nevents", "ylin", 0.0, 0.0);
 
-  canv1->Update();
-  pdf_name = REVISION+"_p_TAG_and_PROBE_lin.pdf";
-  canv1->Print(pdf_name.c_str());
+  // canv1->Update();
+  // pdf_name = REVISION+"_p_TAG_and_PROBE_lin.pdf";
+  // canv1->Print(pdf_name.c_str());
 
-  // ---
+  // // ---
   
-  cout << endl;
-  cout << "plot_all_histos: done." << endl;
+  // cout << endl;
+  // cout << "plot_all_histos: done." << endl;
   
 }
 
