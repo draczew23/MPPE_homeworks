@@ -60,7 +60,7 @@ vector<Int_t> TRG;
 
 
 //string REVISION = "Toy_MC_VER_TRACK_ACC_AND_TRG";
-string REVISION = "Toy_MC_VER_ALL_GEN";
+string REVISION = "Hom_MC_VER_ALL_GEN";
 
 string pdf_name;
 
@@ -109,29 +109,46 @@ TH1F *h_eff_the = new TH1F("h_eff_the","h_eff_the", N_bins_the,MIN_the,MAX_the);
 
 // HISTOGRAMS: variable distributions (accepted by trigger)
 
-TH1F *h_p = new TH1F("h_p","h_p", N_bins_the,MIN_the,MAX_the);
+TH1F *h_p = new TH1F("h_p","h_p", N_bins_the,MIN_p, MAX_p);
 
 // HISTOGRAMS: variable distributions (all generated)
 
-TH1F *h_gen_p = new TH1F("h_gen_p","h_gen_p", N_bins_the,MIN_the,MAX_the);
+TH1F *h_gen_p = new TH1F("h_gen_p","h_gen_p", N_bins_the,MIN_p, MAX_p);
 
 // HISTOGRAMS: MC generated (true) efficiency
 
-TH1F *h_gen_eff_p = new TH1F("h_gen_eff_p","h_gen_eff_p", N_bins_the,MIN_the,MAX_the);
+TH1F *h_gen_eff_p = new TH1F("h_gen_eff_p","h_gen_eff_p", N_bins_the,MIN_p, MAX_p);
 
 // HISTOGRAMS: MC TAG'ed events
 
-TH1F *h_TAG_p = new TH1F("h_TAG_p","h_TAG_p", N_bins_the,MIN_the,MAX_the);
+TH1F *h_TAG_p = new TH1F("h_TAG_p","h_TAG_p", N_bins_the,MIN_tMIN_p, MAX_p);
 
 // HISTOGRAMS: MC PROBE'ed events
 
-TH1F *h_PROBE_p = new TH1F("h_PROBE_p","h_PROBE_p", N_bins_the,MIN_the,MAX_the);
+TH1F *h_PROBE_p = new TH1F("h_PROBE_p","h_PROBE_p", N_bins_the,MIN_p, MAX_p);
 
 // HISTOGRAMS: MC extracted (TAG and PROBE) efficiency
 
-TH1F *h_eff_p = new TH1F("h_eff_p","h_eff_p", N_bins_the,MIN_the,MAX_the);
+TH1F *h_eff_p = new TH1F("h_eff_p","h_eff_p", N_bins_the,MIN_p, MAX_p);
 
 // ==============================================================================
+
+TH1F *h_p_plus = new TH1F("h_p_plus","h_p_plus", N_bins_p,MIN_p, MAX_p);
+
+TH1F *h_p_minus = new TH1F("h_p_minus","h_p_minus", N_bins_p,MIN_p, MAX_p);
+
+TH1F *h_TAG_p_plus = new TH1F("h_TAG_p_plus","h_TAG_p_plus", N_bins_p,MIN_p, MAX_p);
+
+TH1F *h_TAG_p_minus = new TH1F("h_TAG_p_minus","h_TAG_p_minus", N_bins_p,MIN_p, MAX_p);
+
+TH1F *h_PROBE_p_plus = new TH1F("h_PROBE_p_plus","h_PROBE_p_plus", N_bins_p,MIN_p, MAX_p);
+
+TH1F *h_PROBE_p_minus = new TH1F("h_PROBE_p_minus","h_PROBE_p_minus", N_bins_p,MIN_p, MAX_p);
+
+TH1F *h_eff_p_plus = new TH1F("h_eff_p_plus","h_eff_p_plus", N_bins_p,MIN_p, MAX_p);
+
+TH1F *h_eff_p_minus = new TH1F("h_eff_p_minus","h_eff_p_minus", N_bins_p,MIN_p, MAX_p);
+
 
 double p_acceptance(double p) {
 
@@ -347,6 +364,9 @@ void fill_trg_histos(long N) {
     if(trg1 == 1) h_p->Fill(p1);
     if(trg2 == 1) h_p->Fill(p2);
 
+    if(trg1 == 1) h_p_plus->Fill(p1);
+    if(trg2 == 1) h_p_minus->Fill(p2);
+
     // the
 
     if(trg1 == 1) h_the->Fill(the1);
@@ -385,6 +405,10 @@ void fill_TAG_and_PROBE_histos(long N) {
     if(trg1 == 1) h_TAG_p->Fill(p2);
     if(trg2 == 1) h_TAG_p->Fill(p1);
 
+    if(trg1 == 1) h_TAG_p_plus->Fill(p1);
+    if(trg1 == 1) h_TAG_p_minus->Fill(p2);
+
+
     // the
 
     if(trg1 == 1) h_TAG_the->Fill(the2);
@@ -396,6 +420,9 @@ void fill_TAG_and_PROBE_histos(long N) {
     
     if((trg1 == 1) && (trg2 == 1)) h_PROBE_p->Fill(p2);
     if((trg2 == 1) && (trg1 == 1)) h_PROBE_p->Fill(p1);
+
+    if((trg1 == 1) && (trg2 == 1)) h_PROBE_p_plus->Fill(p1);
+    if((trg2 == 1) && (trg1 == 1)) h_PROBE_p_minus->Fill(p2);
 
     // the
 
@@ -547,77 +574,49 @@ void plot_all_histos() {
 
   Int_t ipad = 0;
 
+  // ---
+  
   //
-  canv1->Clear();
-  canv1->Divide(1,1,0.005,0.005);
-
-  // plot_single_hist(h_the, canv1, 1, "the eff", "the", "eff", "ylin", 0.0, 0.0);
-
-  plot_two_hist(h_gen_eff_the, h_eff_the , canv1, 1, "the eff", "the", "eff", "ylin", 0.0, 0.0);
-
-  canv1->Update();
-  pdf_name = REVISION+"_p_gen_eff_the_plus_TAG_and_PROBE_eff.pdf";
-  canv1->Print(pdf_name.c_str());
-  
-  TCanvas *canv2 = new TCanvas("canv2","canv2",10,10,1400,700);
-
-  
   // p: h_gen_eff plus TAG and PROBE effic
   //
   
-  canv2->Clear();
-  canv2->Divide(1,1,0.005,0.005);
+  canv1->Clear();
+  canv1->Divide(1,1,0.005,0.005);
 
-  plot_two_hist(h_gen_eff_p, h_eff_p , canv2, 1, "theta eff", "theta radians ", "eff", "ylin", 0.0, 0.0);
+  plot_single_hist(h_eff_the , canv1, 1, "theta eff", "theta radians", "eff", "ylin", 0.0, 0.0);
 
-  canv2->Update();
-  pdf_name = REVISION+"_p_gen_eff_plus_TAG_and_PROBE_eff.pdf";
-  canv2->Print(pdf_name.c_str());
+  canv1->Update();
+  pdf_name = REVISION+"_the_eff.pdf";
+  canv1->Print(pdf_name.c_str());
+    
+  canv1->Clear();
+  canv1->Divide(1,1,0.005,0.005);
+
+  plot_two_hist(h_TAG_the, h_PROBE_the, canv1, 1, "theta TAG and PROBE", "theta radians", "Nevents", "ylin", 0.0, 0.0);
+
+  canv1->Update();
+  pdf_name = REVISION+"_the_TAG_and_PROBE_lin.pdf";
+  canv1->Print(pdf_name.c_str());
+
+  // ---
   
-  // //
-  // // p gen and trg
-  // //
+  cout << endl;
+  cout << "plot_all_histos: done." << endl;
   
-  // canv1->Clear();
-  // canv1->Divide(1,1,0.005,0.005);
-
-  // plot_two_hist(h_gen_p, h_p, canv1, 1, "p gen and trg", "p (GeV)", "Nevents", "ylin", 0.0, 0.0);
-
-  // canv1->Update();
-  // pdf_name = REVISION+"_p_gen_trg_lin.pdf";
-  // canv1->Print(pdf_name.c_str());
-
-  // //
-  // // p TAG and PROBE
-  // //
-  
-  // canv1->Clear();
-  // canv1->Divide(1,1,0.005,0.005);
-
-  // plot_two_hist(h_TAG_p, h_PROBE_p, canv1, 1, "p TAG and PROBE", "p (GeV)", "Nevents", "ylin", 0.0, 0.0);
-
-  // canv1->Update();
-  // pdf_name = REVISION+"_p_TAG_and_PROBE_lin.pdf";
-  // canv1->Print(pdf_name.c_str());
-
-  // // ---
-  
-  // cout << endl;
-  // cout << "plot_all_histos: done." << endl;
   
 }
 
 // ==============================================================================
 
 void first() {
-  gener_MC("Trig_eff_homework.txt", N_GEN_EVENTS);
+  // gener_MC("Trig_eff_homework.txt", N_GEN_EVENTS);
   read_MC("Trig_eff_homework.txt", N_EVENTS);   
 
 
   cout << endl;
   cout << "N_EVENTS = " << N_EVENTS << endl;
 
-  fill_gen_histos(N_EVENTS);
+  // fill_gen_histos(N_EVENTS);
 
   fill_trg_histos(N_EVENTS);
 
