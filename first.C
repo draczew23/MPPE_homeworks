@@ -121,7 +121,7 @@ TH1F *h_gen_eff_p = new TH1F("h_gen_eff_p","h_gen_eff_p", N_bins_the,MIN_p, MAX_
 
 // HISTOGRAMS: MC TAG'ed events
 
-TH1F *h_TAG_p = new TH1F("h_TAG_p","h_TAG_p", N_bins_the,MIN_tMIN_p, MAX_p);
+TH1F *h_TAG_p = new TH1F("h_TAG_p","h_TAG_p", N_bins_the,MIN_p, MAX_p);
 
 // HISTOGRAMS: MC PROBE'ed events
 
@@ -446,6 +446,10 @@ void divide_histos() {
 
   h_eff_p->Divide(h_PROBE_p, h_TAG_p, 1.0, 1.0, "B");
 
+  h_eff_p_plus->Divide(h_PROBE_p_plus, h_TAG_p_plus, 1.0, 1.0, "B");
+
+  h_eff_p_minus->Divide(h_PROBE_p_minus, h_TAG_p_minus, 1.0, 1.0, "B");
+
     // gen eff theta
   
   h_gen_eff_the->Divide(h_the, h_gen_the, 1.0, 1.0, "B");
@@ -577,13 +581,13 @@ void plot_all_histos() {
   // ---
   
   //
-  // p: h_gen_eff plus TAG and PROBE effic
+  // theta effectivity
   //
   
   canv1->Clear();
   canv1->Divide(1,1,0.005,0.005);
 
-  plot_single_hist(h_eff_the , canv1, 1, "theta eff", "theta radians", "eff", "ylin", 0.0, 0.0);
+  plot_single_hist(h_eff_the , canv1, 1, "#theta eff", "#theta radians", "eff", "ylin", 0.0, 0.0);
 
   canv1->Update();
   pdf_name = REVISION+"_the_eff.pdf";
@@ -592,11 +596,53 @@ void plot_all_histos() {
   canv1->Clear();
   canv1->Divide(1,1,0.005,0.005);
 
-  plot_two_hist(h_TAG_the, h_PROBE_the, canv1, 1, "theta TAG and PROBE", "theta radians", "Nevents", "ylin", 0.0, 0.0);
+  plot_two_hist(h_TAG_the, h_PROBE_the, canv1, 1, "#theta TAG and PROBE", "#theta radians", "Nevents", "ylin", 0.0, 0.0);
 
   canv1->Update();
   pdf_name = REVISION+"_the_TAG_and_PROBE_lin.pdf";
   canv1->Print(pdf_name.c_str());
+
+  canv1->Clear();
+  canv1->Divide(1,1,0.005,0.005);
+
+  // effectivity for muon plus
+  plot_single_hist(h_eff_p_plus , canv1, 1, "#mu^{+} p eff", "p (GeV)", "eff", "ylin", 0.0, 0.0);
+
+  canv1->Update();
+  pdf_name = REVISION+"_p_plus_eff.pdf";
+  canv1->Print(pdf_name.c_str());
+    
+  canv1->Clear();
+  canv1->Divide(1,1,0.005,0.005);
+
+  plot_two_hist(h_TAG_p_plus, h_PROBE_p_plus, canv1, 1, "#mu^{+} p eff TAG and PROBE", "p (GeV)", "Nevents", "ylin", 0.0, 0.0);
+
+  canv1->Update();
+  pdf_name = REVISION+"_p_plus_TAG_and_PROBE_lin.pdf";
+  canv1->Print(pdf_name.c_str());
+
+  canv1->Clear();
+  canv1->Divide(1,1,0.005,0.005);
+
+   // effectivity for muon minus
+  plot_single_hist(h_eff_p_minus , canv1, 1, "#mu^{-} p eff", "p (GeV)", "eff", "ylin", 0.0, 0.0);
+
+  canv1->Update();
+  pdf_name = REVISION+"_p_minus_eff.pdf";
+  canv1->Print(pdf_name.c_str());
+    
+  canv1->Clear();
+  canv1->Divide(1,1,0.005,0.005);
+
+  plot_two_hist(h_TAG_p_minus, h_PROBE_p_minus, canv1, 1, "#mu^{-} p eff TAG and PROBE", "p (GeV)", "Nevents", "ylin", 0.0, 0.0);
+
+  canv1->Update();
+  pdf_name = REVISION+"_p_minus_TAG_and_PROBE_lin.pdf";
+  canv1->Print(pdf_name.c_str());
+
+  canv1->Clear();
+  canv1->Divide(1,1,0.005,0.005);
+  
 
   // ---
   
@@ -609,14 +655,10 @@ void plot_all_histos() {
 // ==============================================================================
 
 void first() {
-  // gener_MC("Trig_eff_homework.txt", N_GEN_EVENTS);
   read_MC("Trig_eff_homework.txt", N_EVENTS);   
-
 
   cout << endl;
   cout << "N_EVENTS = " << N_EVENTS << endl;
-
-  // fill_gen_histos(N_EVENTS);
 
   fill_trg_histos(N_EVENTS);
 
